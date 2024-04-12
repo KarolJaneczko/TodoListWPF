@@ -1,1 +1,6 @@
-# TodoListWPF
+- aplikacja typu desktop (WPF) napisana w języku C#
+- aplikacja do składowania informacji powinna wykorzystywać bazę danych i korzystać z technik mapowania obiektowo-relacyjnego (ORM)
+- funkcjonalność aplikacji powinna obejmować:
+- dodawanie/usuwanie/edycję zadań dla określonego dnia
+- zmianę dnia dla którego wyświetlane są zadania
+- powiadomienia o zbliżających się zadaniach (zadanie opcjonalne, nie jest wymagane, może finalnie dodać trochę punktów w procesie rekrutacji)
