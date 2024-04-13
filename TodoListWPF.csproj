@@ -17,11 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Classes\Database\" />
-    <Folder Include="Core\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Include="App.xaml" />
   </ItemGroup>
 

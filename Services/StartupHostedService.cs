@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using TodoListWPF.Classes.Database.Entities;
 using TodoListWPF.Services.Interfaces;
 
 namespace TodoListWPF.Services {

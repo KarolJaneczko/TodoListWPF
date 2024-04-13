@@ -27,14 +27,12 @@ namespace TodoListWPF {
         }
 
         private void OnStartup(object sender, StartupEventArgs e) {
-            var mainWindow = ServiceProvider.GetService<MainWindow>();
-            mainWindow.Show();
-
             var databaseService = ServiceProvider.GetService<IDatabaseService>();
             StartupHostedService = new StartupHostedService(databaseService);
             StartupHostedService.StartAsync(new CancellationToken());
 
+            var mainWindow = ServiceProvider.GetService<MainWindow>();
+            mainWindow.Show();
         }
     }
-
 }
