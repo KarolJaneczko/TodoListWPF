@@ -1,20 +1,27 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using TodoListWPF.Classes.Database.Entities;
 using TodoListWPF.Services.Interfaces;
 
 namespace TodoListWPF.Windows.ViewModels {
     public class MainWindowViewModel(IDatabaseService databaseService) : INotifyPropertyChanged {
-        public event PropertyChangedEventHandler PropertyChanged;
         private IDatabaseService DatabaseService { get; } = databaseService;
+        private ObservableCollection<UserTask> userTasks;
 
-        private List<UserTask> UserTasks { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public ObservableCollection<UserTask> UserTasks {
+            get => userTasks; set {
+                userTasks = value;
+                OnPropertyChanged(nameof(UserTasks));
+            }
+        }
 
         protected void OnPropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public async Task GetUserTasks(CancellationToken cancellationToken) {
-            UserTasks = (await DatabaseService.GetUserTasks(new UserTaskRequest(), cancellationToken)).ToList();
+            UserTasks = new ObservableCollection<UserTask>(await DatabaseService.GetUserTasks(new UserTaskRequest(), cancellationToken));
         }
     }
 }
