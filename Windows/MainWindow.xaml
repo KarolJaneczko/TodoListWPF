@@ -4,8 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:viewmodels="clr-namespace:TodoListWPF.Windows.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+        xmlns:converter="clr-namespace:TodoListWPF.Classes.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    
-        <DataGrid ItemsSource="{Binding UserTasks}" AutoGenerateColumns="True" />
+
+    <Window.Resources>
+        <converter:DateOnlyConverter x:Key="DateOnlyConverter"/>
+    </Window.Resources>
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Height="44">
+            <DatePicker SelectedDate="{Binding FilterDate, Converter={StaticResource DateOnlyConverter}, Mode=TwoWay}"/>
+            <Button Content="Clear date" Click="Clear_Click"/>
+            <Button Content="Add new task" Click="Add_Click"/>
+            <Button Content="Edit task" Click="Edit_Click"/>
+        </StackPanel>
+
+
+        <DataGrid ItemsSource="{Binding UserTasks}" SelectedItem="{Binding SelectedTask}" AutoGenerateColumns="True" IsReadOnly="True" SelectionMode="Single" 
+                  HorizontalAlignment="Stretch" Height="150"  />
+    </StackPanel>
 </Window>
