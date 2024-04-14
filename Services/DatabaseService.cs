@@ -1,8 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Reflection;
+using System.Xml.Linq;
 using TodoListWPF.Classes.Database;
 using TodoListWPF.Classes.Database.Entities;
+using TodoListWPF.Classes.Enums;
 using TodoListWPF.Services.Interfaces;
 
 namespace TodoListWPF.Services {
@@ -54,6 +56,28 @@ namespace TodoListWPF.Services {
             }
 
             return Task.FromResult(result);
+        }
+
+        public async Task EditTasks(IEnumerable<UserTask> userTasks, CancellationToken cancellationToken) {
+            foreach (var task in userTasks) {
+                var find = DatabaseContext.UserTasks.FirstOrDefault(x => x.TaskId == task.TaskId);
+                if (find is not null) {
+                    find.Name = task.Name;
+                    find.TaskType = task.TaskType;
+                    find.Description = task.Description;
+                    find.TargetDate = task.TargetDate;
+                }
+            }
+            await DatabaseContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task RemoveTasks(IEnumerable<int> ids, CancellationToken cancellationToken) {
+            if (ids?.Any() ?? false) {
+                var result = DatabaseContext.UserTasks as IEnumerable<UserTask>;
+                var filtered = result.Where(x => ids.Any(y => y == x.TaskId));
+                DatabaseContext.RemoveRange(filtered);
+            }
+            await DatabaseContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

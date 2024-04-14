@@ -6,7 +6,7 @@ using TodoListWPF.Windows.ViewModels;
 namespace TodoListWPF {
     public partial class MainWindow : Window {
         private IDatabaseService DatabaseService { get; set; }
-        private bool IsWindowInitialized {  get; set; }
+        private bool IsWindowInitialized { get; set; }
 
         public MainWindow(IDatabaseService databaseService) {
             DatabaseService = databaseService;
@@ -26,7 +26,7 @@ namespace TodoListWPF {
         private void Clear_Click(object sender, RoutedEventArgs e) {
             var dataContext = DataContext as MainWindowViewModel;
             dataContext.FilterDate = null;
-            DialogResult = true;
+            dataContext.SelectedTask = null;
         }
 
         private async void Add_Click(object sender, RoutedEventArgs e) {
@@ -39,6 +39,17 @@ namespace TodoListWPF {
         }
 
         private async void Edit_Click(object sender, RoutedEventArgs e) {
+            var dataContext = DataContext as MainWindowViewModel;
+            var dialog = new EditDialog(dataContext.SelectedTask);
+            if (dialog.ShowDialog() ?? false) {
+                if (dialog.EditResult == Classes.Enums.EditResult.Edit) {
+                    await DatabaseService.EditTasks([dialog.EditUserTask], new CancellationToken());
+                } else if (dialog.EditResult == Classes.Enums.EditResult.Delete) {
+                    await DatabaseService.RemoveTasks([dialog.EditUserTask.TaskId], new CancellationToken());
+                }
+                await dataContext.GetUserTasks(new CancellationToken());
+                dataContext.SelectedTask = null;
+            }
         }
     }
 }

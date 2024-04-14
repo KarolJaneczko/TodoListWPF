@@ -27,6 +27,7 @@ namespace TodoListWPF.Windows.ViewModels {
             get => selectedTask; set {
                 selectedTask = value;
                 OnPropertyChanged(nameof(SelectedTask));
+                OnPropertyChanged(nameof(IsEditEnabled));
             }
         }
 
@@ -37,6 +38,8 @@ namespace TodoListWPF.Windows.ViewModels {
                 OnPropertyChanged(nameof(UserTasks));
             }
         }
+
+        public bool IsEditEnabled => SelectedTask is not null;
 
         public async Task GetUserTasks(CancellationToken cancellationToken) {
             UserTasks = new ObservableCollection<UserTask>(await DatabaseService.GetUserTasks(new UserTaskRequest(), cancellationToken));

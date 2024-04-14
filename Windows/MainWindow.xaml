@@ -17,7 +17,7 @@
             <DatePicker SelectedDate="{Binding FilterDate, Converter={StaticResource DateOnlyConverter}, Mode=TwoWay}"/>
             <Button Content="Clear date" Click="Clear_Click"/>
             <Button Content="Add new task" Click="Add_Click"/>
-            <Button Content="Edit task" Click="Edit_Click"/>
+            <Button Content="Edit task" Click="Edit_Click" IsEnabled="{Binding IsEditEnabled}"/>
         </StackPanel>
 
 
